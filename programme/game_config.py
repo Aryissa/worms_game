@@ -3,6 +3,8 @@ import pygame
 class GameConfig:
     WINDOW_H=640
     WINDOW_W=960
+    REGARD_DROIT=False
+    REGARD_GAUCHE=False
     Y_PLATEFORM=516
     PLAYER_W = 64
     PLAYER_H = 64

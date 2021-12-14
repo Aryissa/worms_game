@@ -4,6 +4,7 @@ from game_state import *
 from move import *
 
 class Worms(pygame.sprite.Sprite):
+    
     def __init__(self,x):
         pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(x,GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H)
@@ -14,7 +15,10 @@ class Worms(pygame.sprite.Sprite):
         window.blit(self.image,self)
 
     def on_ground(self):
+        print(self.rect.bottom)
         if  self.rect.bottom > GameConfig.Y_PLATEFORM:
+            
+                            
             return True
         return False
         
@@ -23,29 +27,36 @@ class Worms(pygame.sprite.Sprite):
         
         fx = 0
         fy = 0
-        
-           
-        
+        if self.rect.bottom==508    :
+                if GameConfig.REGARD_DROIT==True:
+                    self.image = GameConfig.STANDING_IMG
+                else:
+                    self.image = GameConfig.STANDING_IMG
+                if GameConfig.REGARD_GAUCHE==True:
+                    self.image = GameConfig.STANDING_IMG_REVERSE
+                else:
+                    self.image = GameConfig.STANDING_IMG
+            
         if next_move.jump:
+            
             fy = GameConfig.FORCE_JUMP
             self.image = GameConfig.JUMP_IMG
         if next_move.left :
             fx = GameConfig.FORCE_LEFT
             self.image = GameConfig.STANDING_IMG_REVERSE
-            regard_gauche = True
-            regard_droit = False
+            GameConfig.REGARD_GAUCHE==True
+            GameConfig.REGARD_DROIT==False
         elif next_move.right :
             fx = GameConfig.FORCE_RIGHT
             self.image = GameConfig.STANDING_IMG
-            regard_droit = True
-            regard_gauche = False
-        if  regard_droit == True or regard_gauche:
-
+            GameConfig.REGARD_GAUCHE==False
+            GameConfig.REGARD_DROIT==True
+            
 # Vitesse
-        
-        
+
         if self.on_ground() :
             self.vy = fy*GameConfig.DT
+           
         else :
             self.vy = self.vy+GameConfig.GRAVITY*GameConfig.DT
         self.vx = fx*GameConfig.DT
