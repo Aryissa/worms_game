@@ -2,7 +2,16 @@ import pygame
 from game_config import *
 from game_state import *
 from worms import *
+from move import *
+import time
 
+def display_message(window,text,font_size,x,y) :
+    img = GameConfig.FONT20.render(text,True,GameConfig.GREY)
+    if font_size == 150:
+        img = GameConfig.FONT150.render(text,True,GameConfig.GREY)
+    display_rect = img.get_rect()
+    display_rect.center=(x,y)
+    window.blit(img,display_rect)
 
 def get_next_move():
         next_move = Move()
