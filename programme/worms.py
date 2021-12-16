@@ -114,5 +114,3 @@ class Worms(pygame.sprite.Sprite):
         y = self.rect.top
         vy_max = (GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H-y)/GameConfig.DT
         self.vy = min(self.vy,vy_max)
-        
-    
