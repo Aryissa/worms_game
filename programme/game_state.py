@@ -1,4 +1,5 @@
 from worms import *
+from terrain import *
 class GameState :
     def __init__(self):
         self.player = Worms(20)

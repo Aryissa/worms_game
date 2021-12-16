@@ -1,7 +1,9 @@
 import pygame
+import time
 from game_config import *
 from game_state import *
 from move import *
+
 
 class Worms(pygame.sprite.Sprite):
     
@@ -11,11 +13,11 @@ class Worms(pygame.sprite.Sprite):
         self.image = GameConfig.STANDING_IMG
         self.vx = 0
         self.vy = 0
+        self.temp = 0
     def draw(self,window):
-        window.blit(self.image,self)
+        window.blit(self.image,self) 
 
     def on_ground(self):
-        print(self.rect.bottom)
         if  self.rect.bottom > GameConfig.Y_PLATEFORM:
             
                             
@@ -28,6 +30,7 @@ class Worms(pygame.sprite.Sprite):
         fx = 0
         fy = 0
         if self.rect.bottom==508    :
+
                 if GameConfig.REGARD_DROIT==True:
                     self.image = GameConfig.STANDING_IMG
                 else:
@@ -37,20 +40,60 @@ class Worms(pygame.sprite.Sprite):
                 else:
                     self.image = GameConfig.STANDING_IMG
             
-        if next_move.jump:
-            
-            fy = GameConfig.FORCE_JUMP
-            self.image = GameConfig.JUMP_IMG
+       
         if next_move.left :
-            fx = GameConfig.FORCE_LEFT
-            self.image = GameConfig.STANDING_IMG_REVERSE
+            timed = time.time()
+            
+            if(timed-self.temp<0.2):
+                fx = GameConfig.FORCE_LEFT
+                self.image = GameConfig.STANDING_IMG_REVERSE
+            elif(timed-self.temp<0.4):
+                fx = GameConfig.FORCE_LEFT
+                self.image = GameConfig.STANDING_IMG_REVERSE2
+            elif(timed-self.temp<0.6 ):
+                fx = GameConfig.FORCE_LEFT
+                self.image = GameConfig.STANDING_IMG_REVERSE3
+            elif(timed-self.temp<0.8 ):
+                fx = GameConfig.FORCE_LEFT
+                self.image = GameConfig.STANDING_IMG_REVERSE4
+            elif(timed-self.temp<1 ):
+                fx = GameConfig.FORCE_LEFT
+                self.image = GameConfig.STANDING_IMG_REVERSE5
+            else:
+                self.temp=time.time()
+                self.image = GameConfig.STANDING_IMG_REVERSE
             GameConfig.REGARD_GAUCHE==True
             GameConfig.REGARD_DROIT==False
+        
         elif next_move.right :
-            fx = GameConfig.FORCE_RIGHT
-            self.image = GameConfig.STANDING_IMG
+            timed = time.time()
+            if(timed-self.temp<0.2):
+                fx = GameConfig.FORCE_RIGHT
+                self.image = GameConfig.STANDING_IMG
+            elif(timed-self.temp<0.4):
+                fx = GameConfig.FORCE_RIGHT
+                self.image = GameConfig.STANDING_IMG2
+            elif(timed-self.temp<0.6 ):
+                fx = GameConfig.FORCE_RIGHT
+                self.image = GameConfig.STANDING_IMG3
+            elif(timed-self.temp<0.8 ):
+                fx = GameConfig.FORCE_RIGHT
+                self.image = GameConfig.STANDING_IMG4
+            elif(timed-self.temp<1 ):
+                fx = GameConfig.FORCE_RIGHT
+                self.image = GameConfig.STANDING_IMG5
+            else:
+                self.temp=time.time()
+                self.image = GameConfig.STANDING_IMG
             GameConfig.REGARD_GAUCHE==False
             GameConfig.REGARD_DROIT==True
+        else:
+            self.temp=time.time()
+
+        if next_move.jump:
+            timed = time.time()
+            fy = GameConfig.FORCE_JUMP
+            self.image = GameConfig.JUMP_IMG
             
 # Vitesse
 
