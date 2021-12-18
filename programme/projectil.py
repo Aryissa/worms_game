@@ -8,10 +8,7 @@ class projectil(pygame.sprite.Sprite):
     RIGHT = 1
     def __init__(self,x,y,vx):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = pygame.Rect(x,
-            y,
-            GameConfig.PROJECTIL_W,
-            GameConfig.PROJECTIL_H)
+        self.rect = pygame.Rect(x,y,GameConfig.PROJECTIL_W,GameConfig.PROJECTIL_H)
         self.sprite_count=0
         self.direction=projectil.RIGHT
         self.image =GameConfig.BALLE

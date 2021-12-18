@@ -13,20 +13,19 @@ class GameState :
         for p in self.projectil:
             p.draw(window)
     def advance_state(self,next_move):
+        keys = pygame.key.get_pressed()
         self.player.advance_state(next_move)
+
         for p in self.projectil:
             p.advance_state()
-        if self.time_till_new_projectil == 0 :
+        if keys[pygame.K_F1]:
             self.time_till_new_projectil = GameConfig.TICKS_BETWEEN_PROJECTIL
             vx = GameConfig.BAT_MAX_SPEED
-            vx = vx*random.choice([-1,1])
-            y =random.randint(
-            GameConfig.Y_PLATEFORM-2*GameConfig.PLAYER_H,
-            GameConfig.Y_PLATEFORM-GameConfig.PROJECTIL_H)
-            if vx < 0 :
-                self.projectil.append(projectil(GameConfig.WINDOW_W,y,vx))
-            else :
-                self.projectil.append(projectil(-GameConfig.PROJECTIL_W,y,vx))
-        self.time_till_new_projectil-=1
+            y = self.player.vy+500 #GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H+5
+            print(self.player.vx)
+            print(self.player.vy)
+            self.projectil.append(projectil(20,y,vx))
+            
+        
 
         
