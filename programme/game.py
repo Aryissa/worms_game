@@ -4,6 +4,7 @@ from game_state import *
 from worms import *
 from move import *
 import time
+from projectil import * 
 
 def display_message(window,text,font_size,x,y) :
     img = GameConfig.FONT20.render(text,True,GameConfig.GREY)

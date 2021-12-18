@@ -14,6 +14,13 @@ class GameConfig:
     FORCE_RIGHT = -FORCE_LEFT
     GRAVITY = 9.81
     FORCE_JUMP = -100
+    PROJECTIL_W = 32
+    PROJECTIL_H = 32
+    TICKS_BETWEEN_PROJECTIL = 100
+    PROJECTIL_SPEED = 5
+    NB_FRAMES_PER_SPRITE_PROJECTIL = 3
+    BAT_MAX_SPEED = 15
+
    
 
 
@@ -30,3 +37,5 @@ class GameConfig:
         GameConfig.STANDING_IMG_REVERSE4=pygame.transform.flip(GameConfig.STANDING_IMG4,True,False)
         GameConfig.STANDING_IMG_REVERSE5=pygame.transform.flip(GameConfig.STANDING_IMG5,True,False)
         GameConfig.JUMP_IMG=pygame.image.load('assets/Imageworms/jumpH.png')
+        GameConfig.BALLE=pygame.image.load('assets/Imageworms/balle.png')
+        GameConfig.BALLE_MASKS = pygame.mask.from_surface(GameConfig.BALLE)
