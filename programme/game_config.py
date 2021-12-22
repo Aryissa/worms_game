@@ -39,3 +39,5 @@ class GameConfig:
         GameConfig.JUMP_IMG=pygame.image.load('assets/Imageworms/jumpH.png')
         GameConfig.BALLE=pygame.image.load('assets/Imageworms/balle.png')
         GameConfig.BALLE_MASKS = pygame.mask.from_surface(GameConfig.BALLE)
+        GameConfig.TERRE=pygame.image.load('assets/Imageworms/terreH.png')
+        GameConfig.TERRES=pygame.image.load('assets/Imageworms/terreS.png')

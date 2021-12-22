@@ -15,7 +15,10 @@ class Worms(pygame.sprite.Sprite):
         self.vy = 0
         self.temp = 0
     def draw(self,window):
-        window.blit(self.image,self) 
+        window.blit(self.image,self)
+
+    def drawe(self,window,rectangle):
+        window.blit(self.image,rectangle) 
 
     def on_ground(self):
         if  self.rect.bottom > GameConfig.Y_PLATEFORM:
