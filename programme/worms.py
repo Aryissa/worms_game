@@ -7,20 +7,21 @@ from move import *
 
 class Worms(pygame.sprite.Sprite):
     
-    def __init__(self,x):
+    def __init__(self,x,y):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = pygame.Rect(x,GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H)
+        self.rect = pygame.Rect(x,y-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H) #J'AI MODIFIER ICI
         self.image = GameConfig.STANDING_IMG
         self.vx = 0
         self.vy = 0
         self.temp = 0
+       
     def draw(self,window):
         window.blit(self.image,self)
 
     def drawe(self,window,rectangle):
         window.blit(self.image,rectangle) 
 
-    def on_ground(self):
+    def on_ground(self): #MODIFIER PAR RAPPORT AU COLLISION DE RECTANGLE
         if  self.rect.bottom > GameConfig.Y_PLATEFORM:
             
                             
@@ -117,3 +118,4 @@ class Worms(pygame.sprite.Sprite):
         y = self.rect.top
         vy_max = (GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H-y)/GameConfig.DT
         self.vy = min(self.vy,vy_max)
+

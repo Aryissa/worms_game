@@ -1,8 +1,8 @@
 import pygame
 import time
 class GameConfig:
-    WINDOW_H=640
-    WINDOW_W=960
+    WINDOW_H=700
+    WINDOW_W=1020
     REGARD_DROIT=False
     REGARD_GAUCHE=False
     Y_PLATEFORM=516

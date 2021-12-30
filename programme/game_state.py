@@ -6,19 +6,21 @@ from map import *
 class GameState :
     def __init__(self):
         self.projectil=[]
-        self.time_till_new_projectil = GameConfig.TICKS_BETWEEN_PROJECTIL   
-        self.player = Worms(20)
-        self.map=Map.init()
+        self.time_till_new_projectil = GameConfig.TICKS_BETWEEN_PROJECTIL
+        self.map=Map.init()   #MODIFIER PARTOUT OU IL Y A MAP
+        self.player = Worms(Map.APPARITIONX,Map.APPARITIONY) 
+        
     def draw(self,window) :
         window.blit(GameConfig.BACKGROUND_IMG,(0,0))
         Map.creationMap(self.map,window)
         Map.creerPerso(self.map,window,self.player)
-        #self.player.draw(window)
+        self.player.draw(window)
         for p in self.projectil:
             p.draw(window)
     def advance_state(self,next_move):
         keys = pygame.key.get_pressed()
         self.player.advance_state(next_move)
+        
 
         for p in self.projectil:
             p.advance_state()
