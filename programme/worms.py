@@ -3,17 +3,25 @@ import time
 from game_config import *
 from game_state import *
 from move import *
+from map import *
 
 
 class Worms(pygame.sprite.Sprite):
-    
-    def __init__(self,x,y):
+    TERRE_COURANT=None
+    def __init__(self,x,y,map):
         pygame.sprite.Sprite.__init__(self)
         self.rect = pygame.Rect(x,y-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H) #J'AI MODIFIER ICI
+        Worms.TERRE_COURANT=self.rect.top+35
         self.image = GameConfig.STANDING_IMG
         self.vx = 0
+        self.map=map
         self.vy = 0
         self.temp = 0
+        self.y=y
+        self.x=x
+        self.jump=False
+        
+        
        
     def draw(self,window):
         window.blit(self.image,self)
@@ -21,18 +29,44 @@ class Worms(pygame.sprite.Sprite):
     def drawe(self,window,rectangle):
         window.blit(self.image,rectangle) 
 
-    def on_ground(self): #MODIFIER PAR RAPPORT AU COLLISION DE RECTANGLE
-        if  self.rect.bottom > GameConfig.Y_PLATEFORM:
-            
-                            
+    def on_ground(self):
+        if self.vy==0:
             return True
+        else:
+            return False            
+
+    def majSol(self): #MODIFIER PAR RAPPORT AU COLLISION DE RECTANGLE
+        for terre in self.map.get_Tab():
+            if terre.collidepoint(self.rect.midbottom[0],self.rect.midbottom[1]+10): #rectangle de dessous du verre collision rectangle de dessous du bloc      
+                Worms.TERRE_COURANT=terre.top
+                self.jump=False
+                return True
+        Worms.TERRE_COURANT=GameConfig.WINDOW_H
         return False
+
+    def colli_cote_droite(self):
+        for terre in self.map.get_Tab():
+            if terre.collidepoint(self.rect.midright):
+                return True
+        return False 
         
+    def colli_cote_gauche(self):
+        for terre in self.map.get_Tab():
+            if terre.collidepoint(self.rect.midleft):
+                return True
+        return False
+    
+    def colli_cote_haut(self):
+        for terre in self.map.get_Tab():
+            if terre.collidepoint(self.rect.midtop[0],self.rect.midtop[1]+10):
+                return True
+        return False
+
     def advance_state(self,next_move) :
 # Acceleration
-        
         fx = 0
         fy = 0
+        Worms.majSol(self)
         if self.rect.bottom==508    :
 
                 if GameConfig.REGARD_DROIT==True:
@@ -66,6 +100,8 @@ class Worms(pygame.sprite.Sprite):
             else:
                 self.temp=time.time()
                 self.image = GameConfig.STANDING_IMG_REVERSE
+            if(self.colli_cote_gauche()):
+                fx=0
             GameConfig.REGARD_GAUCHE==True
             GameConfig.REGARD_DROIT==False
         
@@ -89,26 +125,38 @@ class Worms(pygame.sprite.Sprite):
             else:
                 self.temp=time.time()
                 self.image = GameConfig.STANDING_IMG
+            if(self.colli_cote_droite()):
+                fx=0
             GameConfig.REGARD_GAUCHE==False
             GameConfig.REGARD_DROIT==True
         else:
             self.temp=time.time()
 
         if next_move.jump:
-            timed = time.time()
-            fy = GameConfig.FORCE_JUMP
-            self.image = GameConfig.JUMP_IMG
+            if(self.colli_cote_haut()):
+                print("HOLA")
+                self.jump=False
+                self.vy=0
+            else:
+                timed = time.time()
+                fy = GameConfig.FORCE_JUMP
+                self.image = GameConfig.JUMP_IMG
+                self.jump=True
+
+            
+
+
+
             
 # Vitesse
 
-        if self.on_ground() :
+        if self.majSol() and self.on_ground() :
             self.vy = fy*GameConfig.DT
            
         else :
             self.vy = self.vy+GameConfig.GRAVITY*GameConfig.DT
         self.vx = fx*GameConfig.DT
 # Position
-        self.rect = self.rect.move(self.vx*GameConfig.DT,self.vy*GameConfig.DT)
         x = self.rect.left
         vx_min = -x/GameConfig.DT
         vx_max = (GameConfig.WINDOW_W-GameConfig.PLAYER_W-x)/GameConfig.DT
@@ -116,6 +164,8 @@ class Worms(pygame.sprite.Sprite):
         self.vx = max(self.vx,vx_min)
 
         y = self.rect.top
-        vy_max = (GameConfig.Y_PLATEFORM-GameConfig.PLAYER_H-y)/GameConfig.DT
+        vy_max = (Worms.TERRE_COURANT-GameConfig.PLAYER_H-y)/GameConfig.DT
         self.vy = min(self.vy,vy_max)
+        self.rect = self.rect.move(self.vx*GameConfig.DT,self.vy*GameConfig.DT)
+
 
