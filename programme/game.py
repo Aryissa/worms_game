@@ -31,11 +31,7 @@ def game_loop(window):
     quitting=False
     game_state = GameState()
     while not quitting:
-        
-        
-
         for event in pygame.event.get():
-
             if event.type==pygame.QUIT:
                 quitting=True  
         pygame.time.delay(20) 
@@ -43,6 +39,7 @@ def game_loop(window):
         pygame.display.update()     
         next_move = get_next_move()
         game_state.advance_state(next_move)
+        
         
 
 def main():
