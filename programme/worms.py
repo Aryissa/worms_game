@@ -22,15 +22,13 @@ class Worms(pygame.sprite.Sprite):
         self.y=y
         self.x=x
         self.jump=False
-        self.listprojectil=[]
-        self.active=False
-        self.ajouer = False
         self.projectile=None
-        self.image =GameConfig.BALLE
+        self.imageBalle =GameConfig.BALLE
         self.mask =GameConfig.BALLE_MASKS
         self.puissance=10
         self.click_gauche=False
         self.tire_proj=False
+        self.tour_joueur=False
         
     def draw_proj(self,window):
         if self.tire_proj:
@@ -181,6 +179,7 @@ class Worms(pygame.sprite.Sprite):
                 self.projectile=None
                 self.tire_proj=False
                 self.puissance=10
+                self.tour_joueur=False
 
 
             
@@ -208,13 +207,5 @@ class Worms(pygame.sprite.Sprite):
         self.vy = min(self.vy,vy_max)
 
         self.rect = self.rect.move(self.vx*GameConfig.DT,self.vy*GameConfig.DT)
-
-    
-    def setactive(self) : 
-        print("TRUE")  
-        self.active=True
-    def setdesactive(self) : 
-        print("FALSE")    
-        self.active=False
 
 

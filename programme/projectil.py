@@ -17,7 +17,9 @@ class Projectil(pygame.sprite.Sprite):
         self.start_time = pygame.time.get_ticks()
         self.rect = pygame.Rect(player.rect.x,player.rect.y,GameConfig.PROJECTIL_W,GameConfig.PROJECTIL_H)
         self.sprite_count=0
-        self.direction=self.RIGHT
+
+        
+        self.direction=(pygame.mouse.get_pos()[0]-self.rect.x)/abs(pygame.mouse.get_pos()[0]-self.rect.x)
         self.image =GameConfig.BALLE
         self.mask =GameConfig.BALLE_MASKS
         self.puissance=0
@@ -29,10 +31,15 @@ class Projectil(pygame.sprite.Sprite):
    
    
     def advance_state(self,next_move):
-          
-        self.rect.x+=self.vx
-        self.vy += GameConfig.GRAVITY*GameConfig.DT
-        self.rect.y +=self.vy
+
+        if(self.direction>0):  
+            self.rect.x+=self.vx
+            self.vy += GameConfig.GRAVITY*GameConfig.DT
+            self.rect.y +=self.vy
+        else:
+            self.rect.x-=self.vx
+            self.vy += GameConfig.GRAVITY*GameConfig.DT
+            self.rect.y +=self.vy
           
             
 
@@ -44,7 +51,6 @@ class Projectil(pygame.sprite.Sprite):
     def isdead(self):
         for terre in self.map.get_Tab():
             if terre.collidepoint(self.rect.bottomleft) or self.rect.bottomleft[0]>GameConfig.WINDOW_W or self.rect.bottomleft[1]>GameConfig.WINDOW_H:
-                print("is dead fonctionne")
                 return True
         return False
         
