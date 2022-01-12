@@ -6,31 +6,33 @@ from move import *
 
 
 
-class projectil(pygame.sprite.Sprite):
+class Projectil(pygame.sprite.Sprite):
     RIGHT = 1
-    def __init__(self,x,y,velocity,angle):
+    LISTE_PROJ=[]
+    def __init__(self,player,velocity,angle,map):
         pygame.sprite.Sprite.__init__(self)
         super().__init__()
         
-        self.angle = math.radians( angle )
+        self.angle = (math.pi/2)+(math.radians( angle ))
         self.start_time = pygame.time.get_ticks()
-        self.rect = pygame.Rect(x,y,GameConfig.PROJECTIL_W,GameConfig.PROJECTIL_H)
+        self.rect = pygame.Rect(player.rect.x,player.rect.y,GameConfig.PROJECTIL_W,GameConfig.PROJECTIL_H)
         self.sprite_count=0
-        self.direction=projectil.RIGHT
+        self.direction=self.RIGHT
         self.image =GameConfig.BALLE
         self.mask =GameConfig.BALLE_MASKS
-
+        self.puissance=0
+        self.rect.x=player.rect.x
+        self.rect.y=player.rect.y
         self.vx = velocity * math.sin( self.angle )
         self.vy = velocity * math.cos( self.angle )
-    
-
-    def advance_state(self):
-        print(self.rect.y)
-        
+        self.map=map
+   
+   
+    def advance_state(self,next_move):
+          
         self.rect.x+=self.vx
         self.vy += GameConfig.GRAVITY*GameConfig.DT
         self.rect.y +=self.vy
-        self.isdead()
           
             
 
@@ -40,7 +42,9 @@ class projectil(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
 
     def isdead(self):
-        if self.rect.y > 1000:
-            print("is dead fonctionne")
-            return True
-        else : return False
+        for terre in self.map.get_Tab():
+            if terre.collidepoint(self.rect.bottomleft) or self.rect.bottomleft[0]>GameConfig.WINDOW_W or self.rect.bottomleft[1]>GameConfig.WINDOW_H:
+                print("is dead fonctionne")
+                return True
+        return False
+        

@@ -1,9 +1,11 @@
 import pygame
 import time
+from math import *
 from game_config import *
 from game_state import *
 from move import *
 from map import *
+from projectil import *
 
 
 class Worms(pygame.sprite.Sprite):
@@ -20,9 +22,32 @@ class Worms(pygame.sprite.Sprite):
         self.y=y
         self.x=x
         self.jump=False
+        self.listprojectil=[]
+        self.active=False
+        self.ajouer = False
+        self.projectile=None
+        self.image =GameConfig.BALLE
+        self.mask =GameConfig.BALLE_MASKS
+        self.puissance=10
+        self.click_gauche=False
+        self.tire_proj=False
         
-        
-       
+    def draw_proj(self,window):
+        if self.tire_proj:
+            self.projectile.draw(window)
+
+    def lauch_proj(self):
+        x,y=pygame.mouse.get_pos()
+        hypothenus=sqrt(((self.rect.x-x)**2)+((self.rect.y-y)**2))
+        x_adj=x
+        y_adj=self.rect.y
+        adjacent=sqrt(((self.rect.x-x_adj)**2)+((self.rect.y-y_adj)**2))
+        angle=math.acos(adjacent/hypothenus)
+        print(math.degrees(angle))
+        self.projectile=Projectil(self,self.puissance,math.degrees(angle),self.map)
+
+
+    
     def draw(self,window):
         window.blit(self.image,self)
 
@@ -134,7 +159,6 @@ class Worms(pygame.sprite.Sprite):
 
         if next_move.jump:
             if(self.colli_cote_haut()):
-                print("HOLA")
                 self.jump=False
                 self.vy=0
             else:
@@ -142,6 +166,22 @@ class Worms(pygame.sprite.Sprite):
                 fy = GameConfig.FORCE_JUMP
                 self.image = GameConfig.JUMP_IMG
                 self.jump=True
+        
+        if next_move.tire and self.tire_proj==False:
+            self.click_gauche=True
+            self.puissance+=5
+            print("PUISSANCE",self.puissance)
+        
+        if not next_move.tire and self.click_gauche:
+            self.tire_proj=True
+            self.click_gauche=False
+
+        if self.projectile!=None:
+            if self.projectile.isdead():
+                self.projectile=None
+                self.tire_proj=False
+                self.puissance=10
+
 
             
 
@@ -166,6 +206,15 @@ class Worms(pygame.sprite.Sprite):
         y = self.rect.top
         vy_max = (Worms.TERRE_COURANT-GameConfig.PLAYER_H-y)/GameConfig.DT
         self.vy = min(self.vy,vy_max)
+
         self.rect = self.rect.move(self.vx*GameConfig.DT,self.vy*GameConfig.DT)
+
+    
+    def setactive(self) : 
+        print("TRUE")  
+        self.active=True
+    def setdesactive(self) : 
+        print("FALSE")    
+        self.active=False
 
 

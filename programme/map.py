@@ -13,14 +13,14 @@ class Map:
     def __init__(self):
         self.matrice=np.zeros((22,30))
         self.matriceRectangle=[]
-        for ligne in range(21):
+        for ligne in range(10,21):
             for colone in range(29):
                 value=random.randint(0,1)
                 self.matrice[ligne][colone]=value
                 if(self.matrice[ligne][colone]==1):
                     self.matriceRectangle.append(pygame.Rect(colone*35,ligne*35,35,35))
         
-        for ligne in range(21):
+        for ligne in range(10,21):
             for colone in range(29):
                 if (self.matrice[ligne][colone]==1 and (self.matrice[ligne-1][colone]==0 and self.matrice[ligne+1][colone]==0 and self.matrice[ligne][colone-1]==0 and self.matrice[ligne][colone+1]==0 )):
                     self.matrice[ligne][colone]=0
@@ -29,10 +29,10 @@ class Map:
                             self.matriceRectangle.remove(pygame.Rect(colone*35,ligne*35,35,35))
         
         col=random.randint(0,29)
-        lin=random.randint(0,21)
+        lin=random.randint(10,21)
         while (self.matrice[lin][col]==1 and self.matrice[lin+1][col]!=1):
             col=random.randint(0,29)
-            lin=random.randint(0,21)
+            lin=random.randint(10,21)
 
 
         self.matrice[lin][col]=2
@@ -62,7 +62,7 @@ class Map:
                 window.blit(GameConfig.TERRE,element)
         
     def creerPerso(matrice,window,player):
-        for ligne in range(21):
+        for ligne in range(10,21):
             for colone in range(29):
                 if(matrice[ligne][colone]==2):
                     rectangleplay=pygame.Rect(colone*35,ligne*35,30,30)

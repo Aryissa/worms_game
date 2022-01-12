@@ -18,12 +18,15 @@ def display_message(window,text,font_size,x,y) :
 def get_next_move():
         next_move = Move()
         keys = pygame.key.get_pressed()
+        mouse=pygame.mouse.get_pressed()
         if keys[pygame.K_RIGHT]:
             next_move.right = True
         if keys[pygame.K_LEFT]:
             next_move.left = True
         if keys[pygame.K_UP]:
             next_move.jump = True
+        if mouse[0]:
+            next_move.tire=True
         return next_move
 
 def game_loop(window):
