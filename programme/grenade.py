@@ -13,7 +13,7 @@ class Grenade(pygame.sprite.Sprite):
         super().__init__()
         self.map=map
         self.angle = (math.pi/2)+(math.radians( angle ))
-        self.rect = pygame.Rect(player.rect.x,player.rect.y,GameConfig.PROJECTIL_W,GameConfig.PROJECTIL_H)
+        self.rect = pygame.Rect(player.rect.x,player.rect.y,18,21)
         self.sprite_count=0
         self.player=player
         
@@ -32,27 +32,27 @@ class Grenade(pygame.sprite.Sprite):
     def advance_state(self):
         self.cpt+=1
         if(self.direction>0):  
-            self.vx+=self.acceleration_x*GameConfig.BULLET_DT
+            self.vx+=self.acceleration_x*GameConfig.GRENADE_DT
             self.rect.x+=self.vx
-            self.vy += GameConfig.GRAVITY*GameConfig.BULLET_DT
+            self.vy += GameConfig.GRAVITY*GameConfig.GRENADE_DT
             self.rect.y +=self.vy
         else:
-            self.vx+=self.acceleration_x*GameConfig.BULLET_DT
+            self.vx+=self.acceleration_x*GameConfig.GRENADE_DT
             self.rect.x-=self.vx
-            self.vy += GameConfig.GRAVITY*GameConfig.BULLET_DT
+            self.vy += GameConfig.GRAVITY*GameConfig.GRENADE_DT
             self.rect.y +=self.vy
         for terre in (self.map.get_Tab()):
-            if terre.collidepoint(self.rect.x+GameConfig.PROJECTIL_W,self.rect.y):
-                self.vy = self.vy *0.9
+            if terre.collidepoint(self.rect.x+18,self.rect.y):
+                self.vy = self.vy *0.2
                 self.vx = -self.vx
-            elif terre.collidepoint(self.rect.x-GameConfig.PROJECTIL_W,self.rect.y):
-                self.vy = self.vy *0.9
+            elif terre.collidepoint(self.rect.x-18,self.rect.y):
+                self.vy = self.vy *0.2
                 self.vx = -self.vx
-            if terre.collidepoint(self.rect.x,self.rect.y+GameConfig.PROJECTIL_H):
-                self.vy = self.vy *0.9
+            if terre.collidepoint(self.rect.x,self.rect.y+21):
+                self.vy = self.vy *0.2
                 self.vy = -self.vy
-            elif terre.collidepoint(self.rect.x,self.rect.y-GameConfig.PROJECTIL_H):
-                self.vy = self.vy *0.9
+            elif terre.collidepoint(self.rect.x,self.rect.y-21):
+                self.vy = self.vy *0.2
                 self.vy = -self.vy
           
             
@@ -63,7 +63,7 @@ class Grenade(pygame.sprite.Sprite):
         window.blit(self.image, self.rect)
 
     def isdead(self):
-        if self.cpt==30:
+        if self.cpt==50:
             return True
         return False
     

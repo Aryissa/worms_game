@@ -13,7 +13,7 @@ class Worms(pygame.sprite.Sprite):
     TERRE_COURANT=None
     def __init__(self,x,y,map):
         pygame.sprite.Sprite.__init__(self)
-        self.rect = pygame.Rect(x,y-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H) #J'AI MODIFIER ICI
+        self.rect = pygame.Rect(x,y-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H) 
         Worms.TERRE_COURANT=self.rect.top+35
         self.image = GameConfig.STANDING_IMG
         self.vx = 0
@@ -32,8 +32,13 @@ class Worms(pygame.sprite.Sprite):
         self.tour_joueur=False
         self.choixArme=0 #0 si rocket, si 1 alors grenade
         self.cpt=0
+        self.window=pygame.display.set_mode((GameConfig.WINDOW_W,GameConfig.WINDOW_H))
         self.vivant=True
         
+
+    
+
+
     def draw_proj(self,window):
         if self.tire_proj:
             self.projectile.draw(window)
@@ -45,7 +50,6 @@ class Worms(pygame.sprite.Sprite):
         y_adj=self.rect.y
         adjacent=sqrt(((self.rect.x-x_adj)**2)+((self.rect.y-y_adj)**2))
         angle=math.acos(adjacent/hypothenus)
-        print(math.degrees(angle))
         if(self.choixArme==0):
             self.projectile=Projectil(self,self.puissance,math.degrees(angle),self.map)
         if(self.choixArme==1):
@@ -66,9 +70,9 @@ class Worms(pygame.sprite.Sprite):
         else:
             return False            
 
-    def majSol(self): #MODIFIER PAR RAPPORT AU COLLISION DE RECTANGLE
+    def majSol(self): 
         for terre in self.map.get_Tab():
-            if terre.collidepoint(self.rect.midbottom[0],self.rect.midbottom[1]+10): #rectangle de dessous du verre collision rectangle de dessous du bloc      
+            if terre.collidepoint(self.rect.midbottom[0],self.rect.midbottom[1]+10):   
                 Worms.TERRE_COURANT=terre.top
                 self.jump=False
                 return True
@@ -100,7 +104,7 @@ class Worms(pygame.sprite.Sprite):
         self.cpt+=1
         Worms.majSol(self)
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_a] and self.cpt>20:   #Changement d'arme
+        if keys[pygame.K_a] and self.cpt>10:   #Changement d'arme
             if(self.choixArme==1):
                 self.choixArme=0
                 self.cpt=0
@@ -186,7 +190,6 @@ class Worms(pygame.sprite.Sprite):
         if next_move.tire and self.tire_proj==False:
             self.click_gauche=True
             self.puissance+=5
-            print("PUISSANCE",self.puissance)
         
         if not next_move.tire and self.click_gauche:
             self.tire_proj=True

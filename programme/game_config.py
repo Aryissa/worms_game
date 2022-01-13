@@ -14,6 +14,7 @@ class GameConfig:
     PLAYER_H = 31
     WORMS_DT = 0.4
     BULLET_DT=0.4
+    GRENADE_DT=0.1
     FORCE_LEFT = -20
     FORCE_RIGHT = -FORCE_LEFT
     GRAVITY = 9.81

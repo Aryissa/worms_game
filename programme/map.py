@@ -32,7 +32,7 @@ class Map:
         
         
         col=random.randint(0,29)
-        lin=random.randint(10,21)
+        lin=11
         
 
 
