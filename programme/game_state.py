@@ -14,8 +14,7 @@ class GameState :
         self.tourjoueur=1
         self.tour1=False
 
-        
-        
+    
     def draw(self,window) :
         window.blit(GameConfig.BACKGROUND_IMG,(0,0))
         self.map.creationMap(self.map,window)
@@ -25,12 +24,13 @@ class GameState :
         self.player2.draw_proj(window)
     def advance_state(self,next_move):
         
+        
         if(self.player.tour_joueur):
             self.player.advance_state(next_move)
             if (self.player.projectile==None and self.player.tire_proj):
                 self.player.lauch_proj()
             if not(self.player.projectile==None):
-                self.player.projectile.advance_state(next_move)
+                self.player.projectile.advance_state()
                 if(self.player.projectile.isdead()):
                     self.player2.tour_joueur=True
         
@@ -39,9 +39,16 @@ class GameState :
             if (self.player2.projectile==None and self.player2.tire_proj):
                 self.player2.lauch_proj()
             if not(self.player2.projectile==None):
-                self.player2.projectile.advance_state(next_move)
+                self.player2.projectile.advance_state()
                 if(self.player2.projectile.isdead()):
                     self.player.tour_joueur=True
+
+        
+    def get_player_alive(self):
+        if self.player.vivant==False or self.player2.vivant==False:
+            return True
+        else:
+            return False
 
     
 

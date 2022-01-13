@@ -12,7 +12,8 @@ class GameConfig:
     X_PLATEFORM=516
     PLAYER_W = 21
     PLAYER_H = 31
-    DT = 0.5
+    WORMS_DT = 0.4
+    BULLET_DT=0.4
     FORCE_LEFT = -20
     FORCE_RIGHT = -FORCE_LEFT
     GRAVITY = 9.81
@@ -23,7 +24,7 @@ class GameConfig:
     PROJECTIL_SPEED = 50
     NB_FRAMES_PER_SPRITE_PROJECTIL = 300
     BULLET_MAX_SPEED = 30
-
+    GREY = (51,51,0)
    
 
 
@@ -41,6 +42,9 @@ class GameConfig:
         GameConfig.STANDING_IMG_REVERSE5=pygame.transform.flip(GameConfig.STANDING_IMG5,True,False)
         GameConfig.JUMP_IMG=pygame.image.load('assets/Imageworms/jumpH.png')
         GameConfig.BALLE=pygame.image.load('assets/Imageworms/balle.png')
+        GameConfig.GRENADE=pygame.image.load('assets/Imageworms/grenade.png')
         GameConfig.BALLE_MASKS = pygame.mask.from_surface(GameConfig.BALLE)
         GameConfig.TERRE=pygame.image.load('assets/Imageworms/terreH.png')
         GameConfig.TERRES=pygame.image.load('assets/Imageworms/terreS.png')
+        GameConfig.FONT20 = pygame.font.Font('assets/BradBunR.ttf',20)
+        GameConfig.FONT150 = pygame.font.Font('assets/BradBunR.ttf',150)

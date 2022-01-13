@@ -11,6 +11,7 @@ class Map:
     APPARITIONX=0
     APPARITIONY=0
     def __init__(self):
+        self.vent=random.randint(-5,5)
         self.matrice=np.zeros((22,30))
         self.matriceRectangle=[]
         for ligne in range(10,21):
@@ -28,11 +29,11 @@ class Map:
                         if(element==pygame.Rect(colone*35,ligne*35,35,35)):
                             self.matriceRectangle.remove(pygame.Rect(colone*35,ligne*35,35,35))
         
+        
+        
         col=random.randint(0,29)
         lin=random.randint(10,21)
-        while (self.matrice[lin][col]==1 and self.matrice[lin+1][col]!=1):
-            col=random.randint(0,29)
-            lin=random.randint(10,21)
+        
 
 
         self.matrice[lin][col]=2

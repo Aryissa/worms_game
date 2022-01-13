@@ -27,21 +27,30 @@ def get_next_move():
             next_move.jump = True
         if mouse[0]:
             next_move.tire=True
+
         return next_move
 
+
 def game_loop(window):
-    
+    cpt=0
     quitting=False
     game_state = GameState()
-    while not quitting:
+    game_over=False
+    while not game_over and not quitting:
         for event in pygame.event.get():
             if event.type==pygame.QUIT:
                 quitting=True  
         pygame.time.delay(20) 
-        game_state.draw(window) 
+        game_state.draw(window)
+        fin_Partie=game_state.get_player_alive()
+        if(fin_Partie):
+            cpt+=1
+            display_message(window,"Fin Partie",150,GameConfig.WINDOW_W/2, GameConfig.WINDOW_H/2-50)
+            if(cpt>100):
+                game_over=True
         pygame.display.update()     
         next_move = get_next_move()
-        game_state.advance_state(next_move)
+        game_state.advance_state(next_move)            
         
         
 
