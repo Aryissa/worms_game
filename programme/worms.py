@@ -39,7 +39,6 @@ class Worms(pygame.sprite.Sprite):
             self.projectile.draw(window)
 
     def lauch_proj(self):
-        
         x,y=pygame.mouse.get_pos()
         hypothenus=sqrt(((self.rect.x-x)**2)+((self.rect.y-y)**2))
         x_adj=x
