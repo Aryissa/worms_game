@@ -16,68 +16,74 @@ class Worms(pygame.sprite.Sprite):
         self.rect = pygame.Rect(x,y-GameConfig.PLAYER_H,GameConfig.PLAYER_W,GameConfig.PLAYER_H) 
         Worms.TERRE_COURANT=self.rect.top+35
         self.image = GameConfig.STANDING_IMG
-        self.vx = 0
-        self.map=map
-        self.vy = 0
+        self.vx = 0     #force du worms en x
+        self.map=map    #map  
+        self.vy = 0     #force du worms en x
         self.temp = 0
-        self.y=y
-        self.x=x
-        self.jump=False
-        self.projectile=None
-        self.imageBalle =GameConfig.BALLE
+        self.y=y    #position en y
+        self.x=x    #position en x
+        self.jump=False #savoir s'il saute
+        self.projectile=None    #si le projectile est créer ou pas
+        self.imageBalle =GameConfig.BALLE   
         self.mask =GameConfig.BALLE_MASKS
-        self.puissance=10
-        self.click_gauche=False
-        self.tire_proj=False
-        self.tour_joueur=False
+        self.puissance=10   #puissance de la munition ou de la grenade
+        self.click_gauche=False 
+        self.tire_proj=False    #si on tire ou pas
+        self.tour_joueur=False  #si c'est son tour ou pas
         self.choixArme=0 #0 si rocket, si 1 alors grenade
-        self.cpt=0
+        self.cpt=0  #compteur de temps
         self.window=pygame.display.set_mode((GameConfig.WINDOW_W,GameConfig.WINDOW_H))
-        self.vivant=True
+        self.vivant=True #savoir si le worms est vivant 
         
 
     
 
 
-    def draw_proj(self,window):
+    def draw_proj(self,window): #dessiner le projectile
         if self.tire_proj:
             self.projectile.draw(window)
 
-    def lauch_proj(self):
-        x,y=pygame.mouse.get_pos()
+    def lauch_proj(self): #création du projet
+        #Angle du tire par rapport au curseur
+        x,y=pygame.mouse.get_pos() 
         hypothenus=sqrt(((self.rect.x-x)**2)+((self.rect.y-y)**2))
         x_adj=x
         y_adj=self.rect.y
         adjacent=sqrt(((self.rect.x-x_adj)**2)+((self.rect.y-y_adj)**2))
-        angle=math.acos(adjacent/hypothenus)
+        angle=math.acos(adjacent/hypothenus) #formule de trigonométrie sur les triangle
+        #Savoir si on tire un projectile ou une grenade
         if(self.choixArme==0):
+            #création du projectile
             self.projectile=Projectil(self,self.puissance,math.degrees(angle),self.map)
         if(self.choixArme==1):
+            #création de la grenade
             self.projectile=Grenade(self,self.puissance,math.degrees(angle),self.map)
 
 
     
-    def draw(self,window):
-        if(self.vivant):
+    def draw(self,window):#dessine le worms
+        if(self.vivant):#s'il est vivant
             window.blit(self.image,self)
 
     def drawe(self,window,rectangle):
         window.blit(self.image,rectangle) 
 
-    def on_ground(self):
+    def on_ground(self):#savoir s'il a réatérit sur la terre
         if self.vy==0:
             return True
         else:
             return False            
 
-    def majSol(self): 
-        for terre in self.map.get_Tab():
-            if terre.collidepoint(self.rect.midbottom[0],self.rect.midbottom[1]+10):   
-                Worms.TERRE_COURANT=terre.top
+    def majSol(self): #savoir s'il est sur la terre
+        for terre in self.map.get_Tab(): #pour tous les bloques dans ma map
+            if terre.collidepoint(self.rect.midbottom[0],self.rect.midbottom[1]+10):#verifie si le bas du worms et sur la terre   
+                Worms.TERRE_COURANT=terre.top#la terre où le worms se trouve
                 self.jump=False
                 return True
         Worms.TERRE_COURANT=GameConfig.WINDOW_H
         return False
+
+    #Les différente collision entre la terre et le worms
 
     def colli_cote_droite(self):
         for terre in self.map.get_Tab():
@@ -97,11 +103,13 @@ class Worms(pygame.sprite.Sprite):
                 return True
         return False
 
+
+    #Les différents mouvement que peux faire le Worms
     def advance_state(self,next_move) :
 # Acceleration
         fx = 0
         fy = 0
-        self.cpt+=1
+        self.cpt+=1 #compteur de temps prend +1
         Worms.majSol(self)
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a] and self.cpt>10:   #Changement d'arme
@@ -225,7 +233,7 @@ class Worms(pygame.sprite.Sprite):
         self.rect = self.rect.move(self.vx*GameConfig.WORMS_DT,self.vy*GameConfig.WORMS_DT)
 
     
-        if(self.rect.y==669):
+        if(self.rect.y==669): #si le worms tombe dans le vide alors il meurt
             self.vivant=False
 
     def get_rect_worms(self):
